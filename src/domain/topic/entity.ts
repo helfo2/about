@@ -1,6 +1,12 @@
-import DatedEntity from '../dated/entity';
+import ITopic from './type';
 
-export default abstract class TopicEntity extends DatedEntity {
+export default abstract class TopicEntity {
+  id: string;
+
+  private createdAt: Date | undefined;
+
+  protected updatedAt: Date | undefined;
+
   private _name: string;
 
   public get name(): string {
@@ -31,11 +37,24 @@ export default abstract class TopicEntity extends DatedEntity {
     this._color = value;
   }
 
-  constructor(name: string, description: string, color: string) {
-    super();
+  constructor(topic: ITopic) {
+    this.id = topic._id;
+    this._name = topic._name;
+    this._description = topic._description;
+    this._color = topic._color;
+    this.createdAt = topic.createdAt;
+    this.updatedAt = topic.updatedAt;
+  }
 
-    this._name = name;
-    this._description = description;
-    this._color = color;
+  save(): void {
+    this.updatedAt = new Date();
+  }
+
+  getCreatedAt(): Date | undefined {
+    return this.createdAt;
+  }
+
+  getUpdatedAt(): Date | undefined {
+    return this.updatedAt;
   }
 }

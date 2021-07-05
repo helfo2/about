@@ -1,7 +1,12 @@
-import DatedEntity from '../dated/entity';
 import Comment from './comment';
 
-export default abstract class ArticleEntity extends DatedEntity {
+export default abstract class ArticleEntity {
+  id: string;
+
+  private _createdAt: Date | undefined;
+
+  protected _updatedAt: Date | undefined;
+
   private _title: string;
 
   public get title(): string {
@@ -29,14 +34,28 @@ export default abstract class ArticleEntity extends DatedEntity {
   private _comments: Comment[];
 
   constructor(title: string, content: string) {
-    super();
-
     this.id = '';
+
+    const now = new Date();
+    this._createdAt = now;
+    this._updatedAt = now;
     this._title = title;
     this._content = content;
     this._likes = 0;
     this._publishedAt = undefined;
     this._comments = [];
+  }
+
+  save(): void {
+    this._updatedAt = new Date();
+  }
+
+  getCreatedAt(): Date | undefined {
+    return this._createdAt;
+  }
+
+  getUpdatedAt(): Date | undefined {
+    return this._updatedAt;
   }
 
   /**

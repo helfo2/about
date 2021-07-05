@@ -12,15 +12,13 @@ describe('testing article behaviors', () => {
     expect(article.content).toBe(content);
     expect(article.getLikes()).toBe(0);
     expect(article.getPublishedAt()).toBe(undefined);
-    expect(article.getCreatedAt()).not.toBe(undefined);
-    expect(article.getUpdatedAt()).not.toBe(undefined);
-    expect(article.getUpdatedAt()).toBe(article.getCreatedAt());
   });
 
   test('adding a like', () => {
     const article = new Article('Title 1', 'Content 1');
+    const likes = article.getLikes();
     article.addLike();
-    expect(article.getLikes()).toBe(1);
+    expect(article.getLikes()).toBe(likes + 1);
   });
 
   describe('removing a like', () => {
