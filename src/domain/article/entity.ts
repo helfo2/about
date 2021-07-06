@@ -1,4 +1,5 @@
 import Comment from './comment';
+import IArticle from './type';
 
 export default abstract class ArticleEntity {
   id: string;
@@ -33,21 +34,15 @@ export default abstract class ArticleEntity {
 
   private _comments: Comment[];
 
-  constructor(title: string, content: string) {
-    this.id = '';
-
-    const now = new Date();
-    this.createdAt = now;
-    this.updatedAt = now;
-    this._title = title;
-    this._content = content;
-    this._likes = 0;
-    this._publishedAt = undefined;
-    this._comments = [];
-  }
-
-  save(): void {
-    this.updatedAt = new Date();
+  constructor(article: IArticle) {
+    this.id = article._id;
+    this._title = article.title;
+    this._content = article.content;
+    this._likes = article.likes;
+    this._publishedAt = article.publishedAt;
+    this._comments = article.comments;
+    this.createdAt = article.createdAt;
+    this.updatedAt = article.updatedAt;
   }
 
   getCreatedAt(): Date | undefined {

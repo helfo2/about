@@ -1,6 +1,7 @@
-import ArticleEntity from '../domain/article/entity';
+import IArticle from '../domain/article/type';
 import ITopic from '../domain/topic/type';
 import logger from '../logger';
+import { getAllArticles } from './article/repository';
 import { getAllTopics } from './topic/repository';
 
 interface IDictionary<T> {
@@ -8,9 +9,9 @@ interface IDictionary<T> {
 }
 
 const topicsCache: IDictionary<ITopic> = {};
-const articlesCache: IDictionary<ArticleEntity> = {};
+const articlesCache: IDictionary<IArticle> = {};
 
-async function initializeTopics() {
+const initializeTopics = async () => {
   try {
     const allTopics = await getAllTopics();
 
@@ -20,25 +21,23 @@ async function initializeTopics() {
   } catch (error: any) {
     logger.error(error);
   }
-}
+};
+
+const initializeArticles = async () => {
+  try {
+    const allArticles = await getAllArticles();
+
+    allArticles.forEach((article) => {
+      articlesCache[article._id] = article;
+    });
+  } catch (error: any) {
+    logger.error(error);
+  }
+};
 
 const initialize = async (): Promise<void> => {
   await initializeTopics();
-  // await initializeArticles();
+  await initializeArticles();
 };
-
-// async function initializeArticles() {
-//   let allTopics: Article[];
-
-//   try {
-//     allTopics = await ArticleModel.find({});
-
-//     allTopics.forEach((topic) => {
-//       topicsCache[topic.id] = topic;
-//     });
-//   } catch (error: any) {
-//     logger.error(error);
-//   }
-// }
 
 export { topicsCache, articlesCache, initialize };

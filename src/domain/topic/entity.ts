@@ -46,10 +46,6 @@ export default abstract class TopicEntity {
     this.updatedAt = topic.updatedAt;
   }
 
-  save(): void {
-    this.updatedAt = new Date();
-  }
-
   getCreatedAt(): Date | undefined {
     return this.createdAt;
   }

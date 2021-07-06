@@ -6,7 +6,7 @@ interface IArticle {
   content: string;
   likes: number;
   publishedAt: Date | undefined;
-  comments: Comment[]
+  comments: Comment[];
   createdAt: Date;
   updatedAt: Date | undefined;
 }
