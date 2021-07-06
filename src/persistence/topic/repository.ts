@@ -2,7 +2,7 @@ import logger from '../../logger';
 import TopicModel from './model';
 import ITopic from '../../domain/topic/type';
 import validateTopic from '../../domain/topic/validator';
-import validateObjectId from './validator';
+import validateObjectId from '../validator';
 
 const modelToTopic = (model: { _doc: ITopic; }) => model._doc as ITopic;
 

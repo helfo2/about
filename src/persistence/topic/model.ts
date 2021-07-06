@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 import ITopic from '../../domain/topic/type';
 
 const topicSchema = new mongoose.Schema<ITopic>({
-  _name: String,
-  _description: String,
-  _color: String,
+  name: String,
+  description: String,
+  color: String,
 }, { timestamps: true });
 
 const TopicModel = mongoose.model('Topic', topicSchema);

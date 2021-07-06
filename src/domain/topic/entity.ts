@@ -39,9 +39,9 @@ export default abstract class TopicEntity {
 
   constructor(topic: ITopic) {
     this.id = topic._id;
-    this._name = topic._name;
-    this._description = topic._description;
-    this._color = topic._color;
+    this._name = topic.name;
+    this._description = topic.description;
+    this._color = topic.color;
     this.createdAt = topic.createdAt;
     this.updatedAt = topic.updatedAt;
   }

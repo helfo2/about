@@ -50,7 +50,7 @@ const get = async (req: Request, res: Response): Promise<void> => {
 const create = async (req: Request, res: Response): Promise<void> => {
   const { name, description, color } = req.body;
 
-  let topic: ITopic = { _name: name, _description: description, _color: color } as ITopic;
+  let topic: ITopic = { name, description, color } as ITopic;
 
   try {
     topic = await createTopic(topic);
@@ -70,15 +70,15 @@ const patch = async (req: Request, res: Response): Promise<void> => {
   try {
     if (topicsCache[id] !== undefined) {
       topic = { ...topicsCache[id] };
-      topic._name = name;
-      topic._description = description;
-      topic._color = color;
+      topic.name = name;
+      topic.description = description;
+      topic.color = color;
 
       topic = await updateTopic(topic);
       topicsCache[topic._id] = topic;
       res.status(HttpStatusCode.OK).send(topic);
     } else {
-      logger.warning(`Topic ${id} not found`);
+      logger.warn(`Topic ${id} not found`);
       res.status(HttpStatusCode.NO_CONTENT).send();
     }
   } catch (error: any) {

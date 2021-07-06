@@ -6,7 +6,7 @@ describe('testing topic behaviors', () => {
     const name = 'Name 1';
     const description = 'Description 1';
     const color = 'Color 1';
-    const topic = new Topic({ _name: name, _description: description, _color: color } as ITopic);
+    const topic = new Topic({ name, description, color } as ITopic);
 
     expect(topic.id).toBe(undefined);
     expect(topic.name).toBe(name);

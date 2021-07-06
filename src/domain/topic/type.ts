@@ -1,8 +1,8 @@
 interface ITopic {
   _id: string;
-  _name: string;
-  _description: string;
-  _color: string;
+  name: string;
+  description: string;
+  color: string;
   createdAt: Date;
   updatedAt: Date | undefined;
 }

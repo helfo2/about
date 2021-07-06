@@ -3,9 +3,9 @@ import Comment from './comment';
 export default abstract class ArticleEntity {
   id: string;
 
-  private _createdAt: Date | undefined;
+  private createdAt: Date | undefined;
 
-  protected _updatedAt: Date | undefined;
+  protected updatedAt: Date | undefined;
 
   private _title: string;
 
@@ -37,8 +37,8 @@ export default abstract class ArticleEntity {
     this.id = '';
 
     const now = new Date();
-    this._createdAt = now;
-    this._updatedAt = now;
+    this.createdAt = now;
+    this.updatedAt = now;
     this._title = title;
     this._content = content;
     this._likes = 0;
@@ -47,15 +47,15 @@ export default abstract class ArticleEntity {
   }
 
   save(): void {
-    this._updatedAt = new Date();
+    this.updatedAt = new Date();
   }
 
   getCreatedAt(): Date | undefined {
-    return this._createdAt;
+    return this.createdAt;
   }
 
   getUpdatedAt(): Date | undefined {
-    return this._updatedAt;
+    return this.updatedAt;
   }
 
   /**
