@@ -1,25 +1,36 @@
 import Article from '../domain/article/article';
 import Comment from '../domain/article/comment';
-import { CONTENT_LENGTH, TITLE_LENGTH } from '../domain/article/const';
+import { CONTENT_MAX_LENGTH, TITLE_MAX_LENGTH } from '../domain/article/const';
 import IArticle from '../domain/article/type';
 import validateArticle from '../domain/article/validator';
 
 const buildDummyArticle = () => new Article({
-  title: 'Title 1', content: 'Content 1', likes: 0, publishedAt: undefined, comments: <Comment[]>[],
+  title: 'Title 1', content: 'Content 1', likes: 0, publishedAt: undefined, comments: <Comment[]>[], createdAt: new Date(), updatedAt: new Date(),
 } as IArticle);
+
+const removeSecondFraction = (date: Date) => date.toISOString().slice(-4);
 
 describe('testing article behaviors', () => {
   test('creating an article', () => {
     const title = 'Title 1';
     const content = 'Content 1';
     const article = buildDummyArticle();
-
+    const now = new Date();
     expect(article.id).toBe(undefined);
     expect(article.title).toBe(title);
     expect(article.content).toBe(content);
     expect(article.getComments()).toStrictEqual(<Comment[]>[]);
     expect(article.getLikes()).toBe(0);
     expect(article.getPublishedAt()).toBe(undefined);
+
+    const createdAt = article.getCreatedAt();
+    if (createdAt !== undefined) {
+      expect(removeSecondFraction(createdAt)).toStrictEqual(removeSecondFraction(now));
+    }
+    const updatedAt = article.getUpdatedAt();
+    if (updatedAt !== undefined) {
+      expect(removeSecondFraction(updatedAt)).toStrictEqual(removeSecondFraction(now));
+    }
   });
 
   test('adding a like', () => {
@@ -74,6 +85,13 @@ describe('testing article behaviors', () => {
   });
 
   describe('commenting an article', () => {
+    test('create a comment', () => {
+      const now = new Date();
+      const comment = new Comment('Comment 1');
+      expect(comment.description).toBe('Comment 1');
+      expect(removeSecondFraction(comment.madeAt)).toStrictEqual(removeSecondFraction(now));
+    });
+
     test('comment an article', () => {
       const article = buildDummyArticle();
       article.publish();
@@ -107,16 +125,26 @@ describe('testing article behaviors', () => {
     });
   });
 
+  describe('checking article constants', () => {
+    test('TITLE_LENGTH', () => {
+      expect(TITLE_MAX_LENGTH).toBe(30);
+    });
+
+    test('DESCRIPTION_LENGTH', () => {
+      expect(CONTENT_MAX_LENGTH).toBe(10000);
+    });
+  });
+
   describe('validating an article', () => {
     test('validate title', () => {
-      const title = 'a'.repeat(TITLE_LENGTH + 1);
+      const title = 'a'.repeat(TITLE_MAX_LENGTH + 1);
       expect(() => validateArticle({
         title, content: 'Content 1', likes: 0, publishedAt: undefined, comments: <Comment[]>[],
       } as IArticle)).toThrowError('Article title is invalid');
     });
 
     test('validate content', () => {
-      const content = 'a'.repeat(CONTENT_LENGTH + 1);
+      const content = 'a'.repeat(CONTENT_MAX_LENGTH + 1);
       expect(() => validateArticle({
         title: 'Title 1', content, likes: 0, publishedAt: undefined, comments: <Comment[]>[],
       } as IArticle)).toThrowError('Article content is invalid');

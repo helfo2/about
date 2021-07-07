@@ -1,10 +1,10 @@
-import { DESCRIPTION_LENGTH, NAME_LENGTH } from './const';
+import { DESCRIPTION_MAX_LENGTH, NAME_MAX_LENGTH } from './const';
 import ITopic from './type';
 
-const validateName = (name: string): boolean => (name.length <= NAME_LENGTH);
+const validateName = (name: string): boolean => (name.length <= NAME_MAX_LENGTH);
 
 // eslint-disable-next-line max-len
-const validateDescription = (description: string): boolean => (description.length <= DESCRIPTION_LENGTH);
+const validateDescription = (description: string): boolean => (description.length <= DESCRIPTION_MAX_LENGTH);
 
 const validateColor = (description: string): boolean => {
   const regex = new RegExp('^#(?:[0-9a-fA-F]{3}){1,2}$');

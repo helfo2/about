@@ -14,18 +14,10 @@ export default abstract class ArticleEntity {
     return this._title;
   }
 
-  public set title(value: string) {
-    this._title = value;
-  }
-
   private _content: string;
 
   public get content(): string {
     return this._content;
-  }
-
-  public set content(value: string) {
-    this._content = value;
   }
 
   private _likes: number;

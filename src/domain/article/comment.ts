@@ -5,18 +5,10 @@ export default class Comment {
     return this._description;
   }
 
-  public set description(value: string) {
-    this._description = value;
-  }
-
   private _madeAt: Date;
 
   public get madeAt(): Date {
     return this._madeAt;
-  }
-
-  public set madeAt(value: Date) {
-    this._madeAt = value;
   }
 
   constructor(description: string) {

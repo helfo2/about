@@ -1,9 +1,9 @@
-import { CONTENT_LENGTH, TITLE_LENGTH } from './const';
+import { CONTENT_MAX_LENGTH, TITLE_MAX_LENGTH } from './const';
 import IArticle from './type';
 
-const validateTitle = (title: string): boolean => (title.length <= TITLE_LENGTH);
+const validateTitle = (title: string): boolean => (title.length <= TITLE_MAX_LENGTH);
 
-const validateContent = (content: string): boolean => (content.length <= CONTENT_LENGTH);
+const validateContent = (content: string): boolean => (content.length <= CONTENT_MAX_LENGTH);
 
 const validateLikes = (likes: number): boolean => likes >= 0;
 
