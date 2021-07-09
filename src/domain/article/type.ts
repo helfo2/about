@@ -1,3 +1,4 @@
+import ITopic from '../topic/type';
 import Comment from './comment';
 
 interface IArticle {
@@ -5,10 +6,11 @@ interface IArticle {
   title: string;
   content: string;
   likes: number;
-  publishedAt: Date | undefined;
+  publishedAt: Date | null;
   comments: Comment[];
+  topics: ITopic[];
   createdAt: Date;
-  updatedAt: Date | undefined;
+  updatedAt: Date;
 }
 
 export default IArticle;

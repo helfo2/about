@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 import IArticle from '../../domain/article/type';
 
 const articleSchema = new mongoose.Schema<IArticle>({
@@ -6,7 +6,8 @@ const articleSchema = new mongoose.Schema<IArticle>({
   content: String,
   likes: Number,
   publishedAt: Date,
-  comments: Schema.Types.Mixed,
+  comments: Array,
+  topics: Array,
 }, { timestamps: true });
 
 const ArticleModel = mongoose.model('Article', articleSchema);

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import ITopic from '../../domain/topic/type';
 import logger from '../../logger';
-import { topicsCache } from '../../persistence/cache';
 import {
   createTopic, deleteTopic, getAllTopics, getTopicById, updateTopic,
 } from '../../persistence/topic/repository';
@@ -12,9 +11,6 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 
   try {
     allTopics = await getAllTopics();
-    allTopics.forEach((topic) => {
-      topicsCache[topic._id] = topic;
-    });
 
     res.status(HttpStatusCode.OK).send(allTopics);
   } catch (error: any) {
@@ -28,18 +24,12 @@ const get = async (req: Request, res: Response): Promise<void> => {
 
   let topic: ITopic | null;
   try {
-    if (topicsCache[id] !== undefined) {
-      topic = topicsCache[id];
-      res.status(HttpStatusCode.OK).send(topic);
-    } else {
-      topic = await getTopicById(id);
+    topic = await getTopicById(id);
 
-      if (topic === undefined) {
-        res.status(HttpStatusCode.NO_CONTENT).send();
-      } else {
-        res.status(HttpStatusCode.OK).send(topic);
-        if (topic !== null) topicsCache[topic._id] = topic;
-      }
+    if (topic === null) {
+      res.status(HttpStatusCode.NO_CONTENT).send();
+    } else {
+      res.status(HttpStatusCode.OK).send(topic);
     }
   } catch (error: any) {
     logger.error(error);
@@ -54,7 +44,6 @@ const create = async (req: Request, res: Response): Promise<void> => {
 
   try {
     topic = await createTopic(topic);
-    topicsCache[topic._id] = topic;
     res.status(HttpStatusCode.OK).send(topic);
   } catch (error: any) {
     logger.error(error);
@@ -66,16 +55,12 @@ const patch = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const { name, description, color } = req.body;
 
-  let topic: ITopic;
+  let topic: ITopic | null;
   try {
-    if (topicsCache[id] !== undefined) {
-      topic = { ...topicsCache[id] };
-      topic.name = name;
-      topic.description = description;
-      topic.color = color;
-
-      topic = await updateTopic(topic);
-      topicsCache[topic._id] = topic;
+    topic = await updateTopic({
+      _id: id, name, description, color,
+    } as ITopic);
+    if (topic !== null) {
       res.status(HttpStatusCode.OK).send(topic);
     } else {
       logger.warn(`Topic ${id} not found`);
@@ -94,11 +79,10 @@ const _delete = async (req: Request, res: Response): Promise<void> => {
   try {
     topic = await deleteTopic(id);
 
-    if (topic === undefined) {
+    if (topic === null) {
       res.status(HttpStatusCode.NO_CONTENT).send();
     } else {
       res.status(HttpStatusCode.OK).send(topic);
-      if (topic !== null) topicsCache[topic._id] = topic;
     }
   } catch (error: any) {
     logger.error(error);
