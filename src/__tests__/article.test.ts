@@ -20,11 +20,11 @@ describe('testing article behaviors', () => {
     expect(article.id).toBe(undefined);
     expect(article.title).toBe(title);
     expect(article.content).toBe(content);
-    expect(article.getComments()).toStrictEqual(<Comment[]>[]);
-    expect(article.getLikes()).toBe(0);
-    expect(article.getPublishedAt()).toBe(null);
-    expect(removeSecondFraction(article.getCreatedAt())).toStrictEqual(removeSecondFraction(now));
-    expect(removeSecondFraction(article.getUpdatedAt())).toStrictEqual(removeSecondFraction(now));
+    expect(article.comments).toStrictEqual(<Comment[]>[]);
+    expect(article.likes).toBe(0);
+    expect(article.publishedAt).toBe(null);
+    expect(removeSecondFraction(article.createdAt)).toStrictEqual(removeSecondFraction(now));
+    expect(removeSecondFraction(article.updatedAt)).toStrictEqual(removeSecondFraction(now));
   });
 
   describe('liking an article', () => {
@@ -32,9 +32,9 @@ describe('testing article behaviors', () => {
       const article = buildDummyArticle();
       article.publish();
 
-      const likes = article.getLikes();
+      const likes = article.likes;
       article.addLike();
-      expect(article.getLikes()).toBe(likes + 1);
+      expect(article.likes).toBe(likes + 1);
     });
 
     test('error when not published yet', () => {
@@ -50,7 +50,7 @@ describe('testing article behaviors', () => {
       article.publish();
       article.addLike();
       article.subtractLike();
-      expect(article.getLikes()).toBe(0);
+      expect(article.likes).toBe(0);
     });
 
     test('error when not published', () => {
@@ -70,7 +70,7 @@ describe('testing article behaviors', () => {
     test('publishes an article', () => {
       const article = buildDummyArticle();
       article.publish();
-      expect(article.getPublishedAt()).not.toBe(null);
+      expect(article.publishedAt).not.toBe(null);
     });
 
     test('error when already published', () => {
@@ -85,7 +85,7 @@ describe('testing article behaviors', () => {
       const article = buildDummyArticle();
       article.publish();
       article.unpublish();
-      expect(article.getPublishedAt()).toBe(null);
+      expect(article.publishedAt).toBe(null);
     });
 
     test('error when already unpublished', () => {
@@ -106,7 +106,7 @@ describe('testing article behaviors', () => {
       const article = buildDummyArticle();
       article.publish();
       article.addComment(new Comment('Comment 1'));
-      expect(article.getComments().length).toBe(1);
+      expect(article.comments.length).toBe(1);
     });
 
     test('error when article is not published yet', () => {
@@ -123,7 +123,7 @@ describe('testing article behaviors', () => {
       article.publish();
       article.addComment(comment);
       article.removeComment(comment);
-      expect(article.getComments().length).toBe(0);
+      expect(article.comments.length).toBe(0);
     });
 
     test('error when article is not published yet', () => {
@@ -147,7 +147,7 @@ describe('testing article behaviors', () => {
       const article = buildDummyArticle();
       article.publish();
       article.addComment(new Comment('Comment 1'));
-      expect(article.getComments().length).toBe(1);
+      expect(article.comments.length).toBe(1);
     });
 
     test('error when article is not published yet', () => {
@@ -160,19 +160,19 @@ describe('testing article behaviors', () => {
     test('add a topic', () => {
       const article = buildDummyArticle();
       article.addTopic({ name: 'Name 1', description: '', color: '' } as ITopic);
-      expect(article.getTopics().length).toBe(1);
+      expect(article.topics.length).toBe(1);
     });
 
     test('remove a topic', () => {
       const article = buildDummyArticle();
       article.addTopic({ name: 'Name 1', description: '', color: '' } as ITopic);
       article.removeTopic({ name: 'Name 1', description: '', color: '' } as ITopic);
-      expect(article.getTopics().length).toBe(0);
+      expect(article.topics.length).toBe(0);
     });
 
     test('error when topic is not present', () => {
       const article = buildDummyArticle();
-      expect(article.getTopics().length).toBe(0);
+      expect(article.topics.length).toBe(0);
       expect(() => article.removeTopic({ name: 'Name 1', description: '', color: '' } as ITopic)).toThrowError(`Article ${article.title}: does not contain topic`);
     });
   });
@@ -195,12 +195,12 @@ describe('testing article behaviors', () => {
       expect(article.id).toBe(_article._id);
       expect(article.title).toBe(_article.title);
       expect(article.content).toBe(_article.content);
-      expect(article.getComments()).toBe(_article.comments);
-      expect(article.getTopics()).toBe(_article.topics);
-      expect(article.getLikes()).toBe(_article.likes);
-      expect(article.getPublishedAt()).toBe(_article.publishedAt);
-      expect(article.getCreatedAt()).toBe(_article.createdAt);
-      expect(article.getUpdatedAt()).toBe(_article.updatedAt);
+      expect(article.comments).toBe(_article.comments);
+      expect(article.topics).toBe(_article.topics);
+      expect(article.likes).toBe(_article.likes);
+      expect(article.publishedAt).toBe(_article.publishedAt);
+      expect(article.createdAt).toBe(_article.createdAt);
+      expect(article.updatedAt).toBe(_article.updatedAt);
     });
   });
 
